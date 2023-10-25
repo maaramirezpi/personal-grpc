@@ -1,11 +1,13 @@
 package application
 
-import contract.{PersistencePort, GetCustomerService}
+import com.google.inject.{Inject, Singleton}
+import contract.{GetCustomerService, PersistencePort}
 import domain.Customer
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GetCustomerUseCase(adapter: PersistencePort) extends GetCustomerService{
+@Singleton
+class GetCustomerUseCase @Inject()(adapter: PersistencePort) extends GetCustomerService {
 
   override def call(request: GetCustomerService.request)(implicit ec: ExecutionContext): Future[Customer] = {
     for {
