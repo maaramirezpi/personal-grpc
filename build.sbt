@@ -15,6 +15,15 @@ lazy val domain = (project in file("domain"))
     ),
   )
 
+lazy val protobuf =
+  project
+    .in(file("protobuf"))
+    .settings(
+      name := "protobuf",
+      //scalaVersion := scala3Version
+    )
+    .enablePlugins(Fs2Grpc)
+
 lazy val `persistence-postgres-skunk` =
   project
     .in(file("persistence-postgres-skunk"))
@@ -32,11 +41,11 @@ lazy val `main-grpc-postgres-skunk` =
       libraryDependencies ++= Seq(
 
         "io.circe"        %% "circe-generic"       % CirceVersion,
-
+        "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
         "ch.qos.logback" % "logback-classic" % "1.5.6" % Runtime
       )
     )
-    .dependsOn(domain, `persistence-postgres-skunk`)
+    .dependsOn(domain, `persistence-postgres-skunk`, protobuf)
 
 lazy val root = (project in file("."))
   .settings(
